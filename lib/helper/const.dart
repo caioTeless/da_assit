@@ -1,0 +1,1 @@
+final daAppBarTitle = 'DaAssist';
