@@ -45,45 +45,59 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: assistAppBar,
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            Text(_controller.id.toString()),
-            TextFormField(
-              controller: _dateController,
-              decoration: InputDecoration(
-                hintText: 'dd/mm/yyyy',
-              ),
-              readOnly: true,
-              onTap: () => _selectDate(context),
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Column(
+              children: [
+                Text(_controller.id.toString()),
+                TextFormField(
+                  controller: _dateController,
+                  decoration: InputDecoration(
+                    hintText: 'dd/mm/yyyy',
+                    prefixIcon: Icon(Icons.date_range_outlined),
+                    suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
+                  ),
+                  readOnly: true,
+                  onTap: () => _selectDate(context),
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Type name',
+                    prefixIcon: Icon(Icons.sticky_note_2_outlined),
+                  ),
+                  initialValue: widget.item?.name,
+                  onSaved: (value) => _controller.name = value,
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Type amount',
+                    prefixIcon: Icon(Icons.attach_money_outlined),
+                  ),
+                  initialValue: widget.item?.amount.toString(),
+                  onSaved: (value) => _controller.amount = int.parse(value!),
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  decoration: InputDecoration(
+                    hintText: 'Type value',
+                    prefixIcon: Icon(Icons.attach_money_outlined),
+                  ),
+                  initialValue: widget.item?.value.toString(),
+                  onSaved: (value) => _controller.value = _checkNull(value),
+                ),
+                SizedBox(height: 10),
+                ElevatedButton(
+                  onPressed: () => _onSave(context),
+                  child: Text('Insert'),
+                ),
+              ],
             ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Type name',
-              ),
-              initialValue: widget.item?.name,
-              onSaved: (value) => _controller.name = value,
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Type amount',
-              ),
-              initialValue: widget.item?.amount.toString(),
-              onSaved: (value) => _controller.amount = int.parse(value!),
-            ),
-            TextFormField(
-              decoration: InputDecoration(
-                hintText: 'Type value',
-              ),
-              initialValue: widget.item?.value.toString(),
-              onSaved: (value) => _controller.value = _checkNull(value),
-            ),
-            ElevatedButton(
-              onPressed: () => _onSave(context),
-              child: Text('Insert'),
-            ),
-          ],
+          ),
         ),
       ),
     );

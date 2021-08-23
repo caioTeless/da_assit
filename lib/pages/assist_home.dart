@@ -5,6 +5,7 @@ import 'package:da_assist/model/item_model.dart';
 import 'package:da_assist/pages/assist_register_item.dart';
 import 'package:da_assist/widgets/item_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AssistHome extends StatefulWidget {
   @override
@@ -39,30 +40,49 @@ class _AssistHomeState extends State<AssistHome> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.of(context).pushNamed('/register-item');
-          setState(() {});
-        },
+        onPressed: _onCreate,
       ),
     );
   }
 
   Widget _buildItem(BuildContext context, int index) {
     final data = _controller.items[index];
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-      child: InkWell(
-        onTap: () => _onUpdate(data),
-        child: Card(
-          elevation: 5,
-          child: ListTile(
-            leading: CircleAvatar(child: Text(data.amount.toString())),
-            title: Text(data.name),
-            subtitle: Text('R\$ ${data.value}'),
+    return Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.25,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+        child: InkWell(
+          onTap: () => _onUpdate(data),
+          child: Card(
+            elevation: 5,
+            child: ListTile(
+              leading: CircleAvatar(child: Text(data.amount.toString())),
+              title: Text(data.name),
+              subtitle: Text('R\$ ${data.value}'),
+            ),
           ),
         ),
       ),
+      actions: [
+        IconSlideAction(
+          caption: 'Delete',
+          color: Theme.of(context).accentColor,
+          icon: Icons.delete,
+          onTap: () => _onDelete(data),
+        )
+      ],
     );
+  }
+
+  _onCreate() async {
+    await Navigator.of(context).pushNamed('/register-item');
+    _initialize();
+  }
+
+  _onDelete(ItemModel itemModel) async {
+    await _controller.delete(itemModel);
+    _initialize();
   }
 
   _onUpdate(ItemModel itemModel) async {

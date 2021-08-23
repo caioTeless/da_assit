@@ -40,5 +40,11 @@ class ItemController{
     loading = false;
   }
 
+  Future delete(ItemModel itemModel) async{
+    loading = true;
+    await _dbHelper.delete(itemModel);
+    loading = false;
+  }
+
 
 }
