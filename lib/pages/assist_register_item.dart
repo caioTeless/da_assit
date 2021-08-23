@@ -3,9 +3,9 @@ import 'package:da_assist/data/db_helper.dart';
 import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:da_assist/model/item_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class AssistRegisterItem extends StatefulWidget {
-
   final ItemModel? item;
 
   AssistRegisterItem({
@@ -20,13 +20,26 @@ class AssistRegisterItem extends StatefulWidget {
 class _AssistRegisterItemState extends State<AssistRegisterItem> {
   final _formKey = GlobalKey<FormState>();
   final _controller = ItemController(DbHelper());
+  final _dateController = TextEditingController();
 
   @override
-  void initState(){
+  void initState() {
     _controller.setId(widget.item?.id);
     super.initState();
   }
 
+  Future _selectDate(BuildContext context) async {
+    await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+    ).then((date) {
+      if (date != null) {
+        _dateController.text = DateFormat('dd/MM/yyyy').format(date);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +50,14 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
         child: Column(
           children: [
             Text(_controller.id.toString()),
+            TextFormField(
+              controller: _dateController,
+              decoration: InputDecoration(
+                hintText: 'dd/mm/yyyy',
+              ),
+              readOnly: true,
+              onTap: () => _selectDate(context),
+            ),
             TextFormField(
               decoration: InputDecoration(
                 hintText: 'Type name',
