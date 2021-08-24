@@ -21,6 +21,7 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
   final _formKey = GlobalKey<FormState>();
   final _controller = ItemController(DbHelper());
   final _dateController = TextEditingController();
+  final boolTest = false;
 
   @override
   void initState() {
@@ -36,7 +37,9 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
       lastDate: DateTime(2030),
     ).then((date) {
       if (date != null) {
-        _dateController.text = DateFormat('dd/MM/yyyy').format(date);
+        setState(() {
+          _dateController.text = DateFormat('dd/MM/yyyy').format(date);
+        });
       }
     });
   }
@@ -52,7 +55,8 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
               children: [
-                Text(_controller.id.toString()),
+                Text('Type a date for the list'),
+                SizedBox(height: 50),
                 TextFormField(
                   controller: _dateController,
                   decoration: InputDecoration(
@@ -63,38 +67,47 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                   readOnly: true,
                   onTap: () => _selectDate(context),
                 ),
-                SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Type name',
-                    prefixIcon: Icon(Icons.sticky_note_2_outlined),
-                  ),
-                  initialValue: widget.item?.name,
-                  onSaved: (value) => _controller.name = value,
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Type amount',
-                    prefixIcon: Icon(Icons.attach_money_outlined),
-                  ),
-                  initialValue: widget.item?.amount.toString(),
-                  onSaved: (value) => _controller.amount = int.parse(value!),
-                ),
-                SizedBox(height: 10),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Type value',
-                    prefixIcon: Icon(Icons.attach_money_outlined),
-                  ),
-                  initialValue: widget.item?.value.toString(),
-                  onSaved: (value) => _controller.value = _checkNull(value),
-                ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () => _onSave(context),
-                  child: Text('Insert'),
-                ),
+                _dateController.text == ''
+                    ? Text('Insert date')
+                    : Column(
+                        children: [
+                          SizedBox(height: 50),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Type name',
+                              prefixIcon: Icon(Icons.sticky_note_2_outlined),
+                            ),
+                            initialValue: widget.item?.name,
+                            onSaved: (value) => _controller.name = value,
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Type amount',
+                              prefixIcon: Icon(Icons.attach_money_outlined),
+                            ),
+                            initialValue: widget.item?.amount.toString(),
+                            onSaved: (value) =>
+                                _controller.amount = int.parse(value!),
+                          ),
+                          SizedBox(height: 10),
+                          TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Type value',
+                              prefixIcon: Icon(Icons.attach_money_outlined),
+                            ),
+                            initialValue: widget.item?.value.toString(),
+                            onSaved: (value) =>
+                                _controller.value = _checkNull(value),
+                          ),
+                          SizedBox(height: 10),
+                          ElevatedButton(
+                            onPressed: () => alertDialog(context),
+                            // onPressed: () => _onSave(context),
+                            child: Text('Insert'),
+                          ),
+                        ],
+                      ),
               ],
             ),
           ),
@@ -115,5 +128,36 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
     await _controller.save();
     print('Saved');
     Navigator.pop(context);
+  }
+
+  alertDialog(BuildContext context) {
+    if (_controller.id == null) {
+      return showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          content: Text('Insert another product ? '),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                _onSave(context);
+                setState(() {
+                  _formKey.currentState!.reset();
+                });     
+              },
+              child: Text('Yes'),
+            ),
+            TextButton(
+              child: Text('No'),
+              onPressed: () {
+                _onSave(context);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    } else {
+      _onSave(context);
+    }
   }
 }
