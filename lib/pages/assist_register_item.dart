@@ -2,6 +2,7 @@ import 'package:da_assist/controller/item_controller.dart';
 import 'package:da_assist/data/db_helper.dart';
 import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:da_assist/model/item_model.dart';
+import 'package:da_assist/model/list_items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +22,8 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
   final _formKey = GlobalKey<FormState>();
   final _controller = ItemController(DbHelper());
   final _dateController = TextEditingController();
-  final boolTest = false;
+  ListItemsModel? _listItemModel;
+  int count = 0;
 
   @override
   void initState() {
@@ -66,6 +68,7 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                   ),
                   readOnly: true,
                   onTap: () => _selectDate(context),
+                  onSaved: (value) => _listItemModel!.addDate(_dateController.text),
                 ),
                 _dateController.text == ''
                     ? Text('Insert date')
@@ -82,13 +85,39 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                           ),
                           SizedBox(height: 10),
                           TextFormField(
+                            // CRIAR TEXT FORM MANUALMENTE
+
                             decoration: InputDecoration(
-                              hintText: 'Type amount',
-                              prefixIcon: Icon(Icons.attach_money_outlined),
+                              hintText: widget.item!.amount.toString(),
+                              prefixIcon: InkWell(
+                                onTap: () {
+                                  count = widget.item!.amount;
+                                  if (count > 0) {
+                                    count -= 1;
+                                    print(count);
+                                  }
+                                  widget.item!.amount = count;
+                                },
+                                child: Icon(Icons.remove),
+                              ),
+                              suffixIcon: InkWell(
+                                onTap: () {
+                                  count = widget.item!.amount;
+                                  if (count >= 0) {
+                                    count += 1;
+                                  }
+                                  print(count);
+                                  widget.item!.amount = count;
+                                },
+                                child: Icon(Icons.add),
+                              ),
                             ),
+                            textAlign: TextAlign.center,
+                            readOnly: true,
                             initialValue: widget.item?.amount.toString(),
-                            onSaved: (value) =>
-                                _controller.amount = int.parse(value!),
+                            onSaved: (_) {
+                              _controller.amount = count;
+                            },
                           ),
                           SizedBox(height: 10),
                           TextFormField(
@@ -142,7 +171,7 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                 _onSave(context);
                 setState(() {
                   _formKey.currentState!.reset();
-                });     
+                });
               },
               child: Text('Yes'),
             ),

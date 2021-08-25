@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class DbHelper {
   static String tableName = 'item_table';
   static String querySql =
-      'CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, amount INTEGER, value REAL)';
+      'CREATE TABLE $tableName(id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, name TEXT, amount INTEGER, value REAL)';
   static String dbName = 'assist_db.db';
 
   Future<Database> _getDatabase() async {
