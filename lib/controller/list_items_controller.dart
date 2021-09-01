@@ -1,26 +1,30 @@
-// import 'package:da_assist/controller/item_controller.dart';
-// import 'package:da_assist/data/db_helper.dart';
-// import 'package:da_assist/model/list_items_model.dart';
+import 'package:da_assist/data/db_helper.dart';
+import 'package:da_assist/model/item_model.dart';
+import 'package:da_assist/model/list_items_model.dart';
 
-class ListItemsController{
+class ListItemsController {
 
+  final DbHelper _dbHelper;
 
-  // DateTime? date;
-  // ItemController _itemController = ItemController(DbHelper());
-  // ListItemsModel? listItems;
+  ListItemsController(this._dbHelper);
 
+  List<ListItemsModel> itemDates = [];
 
-  // int get length => listItems!.length;
+  List<ItemModel> newItems = [];
 
-  // getAll() async{
-  //   listItems.await _itemController.readAll();
-  // }
+  int get length => itemDates.length > 0 ? itemDates.length : 0;
 
-  // insert(DateTime date) async{
-  //   listItems = ListItemsModel(date: date, getAll());
-  // }
+  bool? loading;
 
+  Future getItemGroup() async {
+    loading = true;
+    itemDates = await _dbHelper.getItemGroup();
+    loading = false;
+  }
 
-
-
+  Future readAll() async{
+    loading = true;
+    newItems = await _dbHelper.readAll();
+    loading = false;
+  }  
 }

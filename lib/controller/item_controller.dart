@@ -12,6 +12,7 @@ class ItemController{
   int get length => items.length > 0 ? items.length : 0;
 
   int? id;
+  String? date;
   String? name;
   int? amount;
   double? value;
@@ -22,6 +23,7 @@ class ItemController{
   Future save() async{
     final itemModel = ItemModel(
       id: id,
+      date: date!,
       name: name!,
       amount: amount!,
       value: value
@@ -46,6 +48,5 @@ class ItemController{
     await _dbHelper.delete(itemModel);
     loading = false;
   }
-
 
 }

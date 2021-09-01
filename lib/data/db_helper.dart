@@ -1,4 +1,5 @@
 import 'package:da_assist/model/item_model.dart';
+import 'package:da_assist/model/list_items_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -70,6 +71,18 @@ class DbHelper {
       (index) => ItemModel.fromMap(
         data[index],
       ),
+    );
+  }
+
+  Future<List<ListItemsModel>> getItemGroup() async {
+    Database db;
+    db = await _getDatabase();
+    final data = await db.rawQuery(
+        'SELECT date, COUNT(*) AS total FROM $tableName GROUP BY date');
+        print(data);
+    return List.generate(
+      data.length,
+      (index) => ListItemsModel.fromMap(data[index]),
     );
   }
 }

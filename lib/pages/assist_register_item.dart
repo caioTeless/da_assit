@@ -2,7 +2,6 @@ import 'package:da_assist/controller/item_controller.dart';
 import 'package:da_assist/data/db_helper.dart';
 import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:da_assist/model/item_model.dart';
-import 'package:da_assist/model/list_items_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -22,12 +21,14 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
   final _formKey = GlobalKey<FormState>();
   final _controller = ItemController(DbHelper());
   final _dateController = TextEditingController();
-  ListItemsModel? _listItemModel;
   int count = 0;
 
   @override
   void initState() {
     _controller.setId(widget.item?.id);
+    if (widget.item?.date != null) {
+      _dateController.text = widget.item!.date;
+    }
     super.initState();
   }
 
@@ -62,13 +63,13 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                 TextFormField(
                   controller: _dateController,
                   decoration: InputDecoration(
-                    hintText: 'dd/mm/yyyy',
+                    hintText: 'DD/MM/YYYY',
                     prefixIcon: Icon(Icons.date_range_outlined),
                     suffixIcon: Icon(Icons.keyboard_arrow_down_outlined),
                   ),
                   readOnly: true,
                   onTap: () => _selectDate(context),
-                  onSaved: (value) => _listItemModel!.addDate(_dateController.text),
+                  onSaved: (value) => _controller.date = value,
                 ),
                 _dateController.text == ''
                     ? Text('Insert date')
@@ -86,38 +87,43 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
                           SizedBox(height: 10),
                           TextFormField(
                             // CRIAR TEXT FORM MANUALMENTE
-
+                            // decoration: InputDecoration(
+                            //   hintText: widget.item!.amount > 0 ? widget.item!.amount.toString() : 0.toString(),
+                            //   prefixIcon: InkWell(
+                            //     onTap: () {
+                            //       count = widget.item!.amount;
+                            //       if (count > 0) {
+                            //         count -= 1;
+                            //         print(count);
+                            //       }
+                            //       widget.item!.amount = count;
+                            //     },
+                            //     child: Icon(Icons.remove),
+                            //   ),
+                            //   suffixIcon: InkWell(
+                            //     onTap: () {
+                            //       count = widget.item!.amount;
+                            //       if (count >= 0) {
+                            //         count += 1;
+                            //       }
+                            //       print(count);
+                            //       widget.item!.amount = count;
+                            //     },
+                            //     child: Icon(Icons.add),
+                            //   ),
+                            // ),
+                            // textAlign: TextAlign.center,
+                            // readOnly: true,
+                            // initialValue: widget.item?.amount.toString(),
+                            // onSaved: (_) {
+                            //   _controller.amount = count;
+                            // },
                             decoration: InputDecoration(
-                              hintText: widget.item!.amount.toString(),
-                              prefixIcon: InkWell(
-                                onTap: () {
-                                  count = widget.item!.amount;
-                                  if (count > 0) {
-                                    count -= 1;
-                                    print(count);
-                                  }
-                                  widget.item!.amount = count;
-                                },
-                                child: Icon(Icons.remove),
-                              ),
-                              suffixIcon: InkWell(
-                                onTap: () {
-                                  count = widget.item!.amount;
-                                  if (count >= 0) {
-                                    count += 1;
-                                  }
-                                  print(count);
-                                  widget.item!.amount = count;
-                                },
-                                child: Icon(Icons.add),
-                              ),
+                              hintText: 'Amount',
                             ),
-                            textAlign: TextAlign.center,
-                            readOnly: true,
                             initialValue: widget.item?.amount.toString(),
-                            onSaved: (_) {
-                              _controller.amount = count;
-                            },
+                            onSaved: (value) =>
+                                _controller.amount = int.parse(value!),
                           ),
                           SizedBox(height: 10),
                           TextFormField(
@@ -156,6 +162,7 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
     _formKey.currentState!.save();
     await _controller.save();
     print('Saved');
+    print('${_controller.date}');
     Navigator.pop(context);
   }
 

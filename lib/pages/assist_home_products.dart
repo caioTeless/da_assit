@@ -1,6 +1,5 @@
 import 'package:da_assist/controller/item_controller.dart';
 import 'package:da_assist/data/db_helper.dart';
-import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:da_assist/model/item_model.dart';
 import 'package:da_assist/pages/assist_register_item.dart';
 import 'package:da_assist/widgets/item_list.dart';
@@ -29,7 +28,6 @@ class _AssistHomeProductsState extends State<AssistHomeProducts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: assistAppBar,
       body: RefreshIndicator(
         onRefresh: _initialize,
         child: ItemList(
@@ -59,7 +57,7 @@ class _AssistHomeProductsState extends State<AssistHomeProducts> {
             child: ListTile(
               leading: CircleAvatar(child: Text(data.amount.toString())),
               title: Text(data.name),
-              subtitle: Text('R\$ ${data.value}'),
+              subtitle: Text('R\$ ${data.value} - ${data.date}'),
             ),
           ),
         ),

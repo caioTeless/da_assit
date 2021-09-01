@@ -1,35 +1,18 @@
-// import 'package:da_assist/model/item_model.dart';
+import 'package:da_assist/model/item_model.dart';
 
 class ListItemsModel {
-  List<DateTime>? date;
-  // List<ItemModel> listItemModel;
+  String? date;
+  ItemModel? itemModel;
 
-  // int get length => listItemModel.length > 0 ? listItemModel.length : 0;
+  ListItemsModel({
+    this.date,
+    this.itemModel,
+  });
 
-  // ListItemsModel({
-  //   required this.date,
-  //   // required this.listItemModel,
-  // });
-
-  int get length => date!.length > 0 ? date!.length : 0;
-
-
-  addDate(String dateForm){
-    date!.add(DateTime.parse(dateForm));
+  factory ListItemsModel.fromMap(Map<String, dynamic> map) {
+    return ListItemsModel(
+      date: map['date'],
+      itemModel: map['itemModel'],
+    );
   }
-
-  List<DateTime> returnAllDates(){
-    return date!;
-  }
-
-
-
-  // Map<String, dynamic> generateListItems(){
-  //   final listItems = {
-  //     'date': date,
-  //     'items': listItemModel,
-  //   };
-  //   return listItems;
-  // }
-
 }
