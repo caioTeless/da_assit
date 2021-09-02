@@ -9,6 +9,8 @@ class ItemController{
 
   List<ItemModel> items = [];
 
+  List<ItemModel> newItems = [];
+
   int get length => items.length > 0 ? items.length : 0;
 
   int? id;
@@ -49,4 +51,7 @@ class ItemController{
     loading = false;
   }
 
+  void addNewItems(List<ItemModel> newList){
+    newItems = newList;
+  }
 }
