@@ -1,4 +1,5 @@
 import 'package:da_assist/helper/assist_app_bar.dart';
+import 'package:da_assist/pages/assist_calculate.dart';
 import 'package:da_assist/pages/assist_home_products.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class _AssistTabsScreenState extends State<AssistTabsScreen> {
   final List<Widget> _screens = [
     AssistHome(),
     AssistHomeProducts(),
+    AssistCalculate(),
   ];
 
   void _selectScreen(int index) {
@@ -43,6 +45,10 @@ class _AssistTabsScreenState extends State<AssistTabsScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
             label: 'Products',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.calculate),
+            label: 'Calculate',
           ),
         ],
       ),

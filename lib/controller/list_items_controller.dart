@@ -11,7 +11,7 @@ class ListItemsController {
 
   int get length => itemDates.length > 0 ? itemDates.length : 0;
 
-  bool? loading;
+  bool loading = false;
 
   Future getItemGroup() async {
     loading = true;

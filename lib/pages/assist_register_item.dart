@@ -164,6 +164,7 @@ class _AssistRegisterItemState extends State<AssistRegisterItem> {
     print('Saved');
     print('${_controller.date}');
     Navigator.pop(context);
+    // Navigator.of(context, rootNavigator: true).pop();
   }
 
   alertDialog(BuildContext context) {

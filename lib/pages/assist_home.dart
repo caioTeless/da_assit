@@ -1,6 +1,9 @@
 import 'package:da_assist/controller/item_controller.dart';
 import 'package:da_assist/controller/list_items_controller.dart';
 import 'package:da_assist/data/db_helper.dart';
+import 'package:da_assist/model/item_model.dart';
+import 'package:da_assist/pages/assist_register_item.dart';
+import 'package:da_assist/widgets/show_dialog_items.dart';
 import 'package:flutter/material.dart';
 
 class AssistHome extends StatefulWidget {
@@ -38,69 +41,34 @@ class _AssistHomeState extends State<AssistHome> {
                 title: Text(_controller.itemDates[index].date!),
               ),
             ),
-            onTap: () {
-              // print('${checkItems(_controller.itemDates[index].date!)}');
-              createDialog(context, index);
+            onTap: () async {
+              final listItems = checkItems(_controller.itemDates[index].date!);
+              await showDialog(
+                context: context,
+                builder: (_) => ShowDialogItems(
+                  index: index,
+                  checkItems: listItems,
+                  controller: _controller,
+                  onUpdate: _onUpdate,
+                ),
+              );
             },
           );
         });
   }
 
-  Widget alertDialogContainer(int index) {
-    final list = checkItems(_controller.itemDates[index].date!);
-    return SingleChildScrollView(
-      child: Container(
-        height: 300.0,
-        width: 300.0,
-        child: ListView.builder(
-          itemCount: list.length,
-          itemBuilder: (ctx, index) {
-            return InkWell(
-              child: Card(
-                elevation: 3,
-                child: ExpansionTile(
-                  title: Text(list[index]),
-                  children: [
-                    Card(
-                      elevation: 2,
-                      child: Column(
-                        children: [
-                          ListTile(
-                            title: Text(list[index]),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // child: ListTile(
-                //   title: Text(list[index]),
-                // ),
-              ),
-              onTap: () {},
-            );
-          },
-        ),
-      ),
+  _onUpdate(ItemModel itemModel) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+          builder: (context) => AssistRegisterItem(item: itemModel)),
     );
+    _initialize();
   }
 
-  createDialog(BuildContext context, int index) {
-    return showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          title: Text('Teste2'),
-          content: alertDialogContainer(index),
-        );
-      },
-    );
-  }
-
-  List<String> checkItems(String date) {
+  List<Map<String, dynamic>> checkItems(String date) {
     var teste = _controller2.items
         .where((item) => item.date.contains(date))
-        .map((e) => e.name)
+        .map((e) => e.toMap())
         .toList();
     return teste;
   }
