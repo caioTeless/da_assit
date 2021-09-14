@@ -1,9 +1,11 @@
+import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class AssistCalculate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: assistAppBar,
       body: Center(
         child: GridView.count(
           padding: EdgeInsets.all(12),
@@ -18,7 +20,7 @@ class AssistCalculate extends StatelessWidget {
                 child: Text('VALUE PER MONTH'),
               ),
               onTap: (){
-                print('value per month');
+                Navigator.of(context).pushNamed('/value_month');
               },
             ),
             Container(

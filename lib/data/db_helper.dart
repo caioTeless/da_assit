@@ -78,11 +78,23 @@ class DbHelper {
     Database db;
     db = await _getDatabase();
     final data = await db.rawQuery(
-        'SELECT date, COUNT(*) AS total FROM $tableName GROUP BY date');
-        print(data);
+        'SELECT date, SUM(amount) AS amount, SUM(value) AS value FROM $tableName GROUP BY date');
     return List.generate(
       data.length,
-      (index) => ListItemsModel.fromMap(data[index]),
+      (index) => ListItemsModel.fromMap(
+        data[index],
+      ),
     );
   }
+
+  // Future<List<dynamic>> getSumValue() async {
+  //   Database db;
+  //   db = await _getDatabase();
+  //   final data = await db
+  //       .rawQuery('SELECT SUM(value) AS total FROM $tableName GROUP By date');
+  //   return List.generate(
+  //     data.length,
+  //     (index) => data[index]['total'],
+  //   );
+  // }
 }

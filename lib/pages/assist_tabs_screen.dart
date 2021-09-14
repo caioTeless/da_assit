@@ -1,4 +1,3 @@
-import 'package:da_assist/helper/assist_app_bar.dart';
 import 'package:da_assist/pages/assist_calculate.dart';
 import 'package:da_assist/pages/assist_home_products.dart';
 import 'package:flutter/material.dart';
@@ -29,26 +28,28 @@ class _AssistTabsScreenState extends State<AssistTabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: assistAppBar,
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.black,
         currentIndex: _currentIndex,
         onTap: _selectScreen,
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Colors.orange,
+        selectedFontSize: 15,
+        selectedLabelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        unselectedLabelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Início',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Products',
+            label: 'Produtos',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.calculate),
-            label: 'Calculate',
+            label: 'Cálculos',
           ),
         ],
       ),

@@ -9,21 +9,20 @@ import 'package:flutter/material.dart';
 main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        accentColor: Colors.purpleAccent,
-        primaryColor: Colors.purple,
-      ),
-      routes: {
-        AssistRoutes.ASSIST_HOME: (ctx) => AssistTabsScreen(),
-        AssistRoutes.ASSIST_HOME_PRODUCTS: (ctx) => AssistHomeProducts(),
-        AssistRoutes.ASSIST_REGISTER_ITEM: (ctx) => AssistRegisterItem(),
-        AssistRoutes.ASSIST_CALCULATE: (ctx) => AssistCalculate(),
-        AssistRoutes.ASSIST_VALUE_MONTH: (ctx) => AssistValueMonth(),
-      }
-    );
+        theme: ThemeData(
+          primaryColor: Colors.orange,
+          accentColor: Colors.orangeAccent,
+          fontFamily: 'IBMPlexSansArabic',
+        ),
+        routes: {
+          AssistRoutes.ASSIST_HOME: (ctx) => AssistTabsScreen(),
+          AssistRoutes.ASSIST_HOME_PRODUCTS: (ctx) => AssistHomeProducts(),
+          AssistRoutes.ASSIST_REGISTER_ITEM: (ctx) => AssistRegisterItem(),
+          AssistRoutes.ASSIST_CALCULATE: (ctx) => AssistCalculate(),
+          AssistRoutes.ASSIST_VALUE_MONTH: (ctx) => AssistValueMonth(),
+        });
   }
 }

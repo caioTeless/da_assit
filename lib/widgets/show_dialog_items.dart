@@ -1,4 +1,5 @@
 import 'package:da_assist/controller/list_items_controller.dart';
+import 'package:da_assist/helper/const.dart';
 import 'package:da_assist/model/item_model.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,10 @@ class _ShowDialogItemsState extends State<ShowDialogItems> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Items'),
+      title: Text(
+        daShowDialogTitle,
+        style: TextStyle(fontSize: 25),
+      ),
       content: StatefulBuilder(builder: (context, setState) {
         return alertDialogContainer(widget.index, setState);
       }),
@@ -34,28 +38,35 @@ class _ShowDialogItemsState extends State<ShowDialogItems> {
     var listItems = widget.checkItems;
     return SingleChildScrollView(
       child: Container(
-        height: 300.0,
+        height: MediaQuery.of(context).size.height * 0.6,
         width: 300.0,
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: listItems.length,
+          separatorBuilder: (ctx, index) => const Divider(),
           itemBuilder: (ctx, index) {
             return InkWell(
-              child: Card(
-                elevation: 3,
-                child: ExpansionTile(
-                  title: Text(listItems[index]['name']),
-                  children: [
-                    Card(
-                      color: Colors.blue.shade50,
-                      elevation: 2,
-                      child: ListTile(
-                        title: Text(listItems[index]['amount'].toString()),
-                        subtitle:
-                            Text('R\$ ${listItems[index]['value'].toString()}'),
+              child: ExpansionTile(
+                title: Text(
+                  listItems[index]['name'],
+                  style: TextStyle(fontSize: 22),
+                ),
+                textColor: Colors.black,
+                backgroundColor: Colors.grey.shade50,
+                children: [
+                  Card(
+                    elevation: 2,
+                    child: ListTile(
+                      title: Text(
+                        'Itens: ${listItems[index]['amount'].toString()}',
+                        style: TextStyle(fontSize: 19, color: Colors.black),
+                      ),
+                      subtitle: Text(
+                        'Valor: R\$ ${listItems[index]['value'].toString()}',
+                        style: TextStyle(fontSize: 19, color: Colors.black),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               onTap: () {
                 widget.onUpdate(
@@ -79,53 +90,3 @@ class _ShowDialogItemsState extends State<ShowDialogItems> {
     );
   }
 }
-
-// createDialog(BuildContext context, int index) {
-//   return showDialog(
-//     context: context,
-//     builder: (_) {
-//         return AlertDialog(
-//           title: Text('Teste2'),
-//           content: alertDialogContainer(index),
-//         );
-//     },
-//   );
-// }
-
-// Widget alertDialogContainer(int index) {
-//   final list = widget.checkItems(widget.controller.itemDates[index].date!);
-//   return SingleChildScrollView(
-//     child: Container(
-//       height: 300.0,
-//       width: 300.0,
-//       child: ListView.builder(
-//         itemCount: list.length,
-//         itemBuilder: (ctx, index) {
-//           return InkWell(
-//             child: Card(
-//               elevation: 3,
-//               child: ExpansionTile(
-//                 title: Text(list[index]['name']),
-//                 children: [
-//                   Card(
-//                     elevation: 2,
-//                     child: Column(
-//                       children: [
-//                         ListTile(
-//                           title: Text(list[index]['amount'].toString()),
-//                           subtitle:
-//                               Text('R\$ ${list[index]['value'].toString()}'),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//             onTap: () => _onUpdate(getItemModel(list[index])),
-//           );
-//         },
-//       ),
-//     ),
-//   );
-// }
